@@ -1,6 +1,6 @@
 ---
 title: "Fiscore Package: Effective protein structural data visualisation and exploration "
-author: "Auste Kanapeckaite"
+author: "Austė Kanapeckaitė"
 date: "8/10/2021"
 output: rmarkdown::html_vignette
 vignette: >
@@ -11,7 +11,8 @@ vignette: >
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE,fig.width=8, fig.height=6)
+
 ```
 
 ```{r message=FALSE, warning=FALSE}
@@ -21,18 +22,18 @@ library(Fiscore)
 ## 1. Package Overview
 
 *Fiscore* is an R package developed to quickly take advantage of protein topology assessment and perform various analyses or integrate derived scores into relational databases as well as machine learning pipelines. The package builds on protein structure and topology studies [1]⁠,⁠ which led to the derivation of Fi-score or mathematical equation that captures dihedral angle and B-factor parameter influence on amino acid residues in a protein.
-Target evaluation is paramount for rational therapeutics development [2,3]⁠. For example, to successfully engineer therapeutic antibodies, it is necessary to characterise potential binding or contact sites on target proteins [4,5]⁠. Moreover, translating structural data into parameters that can be used to classify targets, store target-ligand information, or incorporated in machine learning could significantly improve our ability to assess new targets and develop novel therapeutics [2,6,7]⁠. As a result, Fi-score, a first-of-its-kind in silico protein fingerprinting approach based on the dihedral angle and B-factor distribution, provides a method to probe binding sites and sites of structural importance [1]⁠. 
-*Fiscore* package provides customisable options to explore targets of interest as well as interactive plots to assess individual amino acid parameters. Moreover, user friendly machine learning pipeline using Gaussian Mixture Models (GMM) allows for a robust structural analysis. 
+Target evaluation is paramount for rational therapeutics development [2,3]⁠. For example, to successfully engineer therapeutic antibodies, it is necessary to characterise potential binding or contact sites on target proteins [4,5]⁠. Moreover, translating structural data into parameters that can be used to classify targets, store target-ligand information, or perform machine learning tasks could significantly improve our ability to assess new targets and develop novel therapeutics [2,6,7]⁠. As a result, Fi-score, a first-of-its-kind *in silico* protein fingerprinting approach based on the dihedral angle and B-factor distribution, was used to develop an integrative package to probe binding sites and sites of structural importance [1]⁠. 
+*Fiscore* package provides customisable options to explore targets of interest as well as interactive plots to assess individual amino acid parameters. Moreover, a user-friendly machine learning pipeline for Gaussian Mixture Models (GMM) allows a robust structural analysis. 
 
 
 ## 2. Package functions and tutorial
 
-![**Figure 1**. Schematic representation of package functions and specific analyses. Curved arrow indicates that additional information might be supplied to density plots from the cluster identification function.](Figure1.jpg)
+![**Figure 1**. Schematic representation of package functions and specific analyses. Curved arrow indicates that additional information might be supplied for density plots from the cluster identification function.](Figure1.jpg){width=80%}
 
 ## 2.1. Preprocessing PDB files
 
 
-Function PDB_process takes a PDB file name which can be expressed as '6KZ5.pdb' or 'path/to/the/file/6KZ5.pdb'. One of the functions dependencies is package Bio3D [8,9]⁠, you can read more about this useful package for extensive PDB analyses that could aid with your target exploration. In addition, another parameter that you can supply is  ‘path’. Path can point to a directory where to split PDB into separate chain files (necessary for the downstream analysis) or you can leave this option to create a folder in your working directory by default. Function PDB_process returns a list of split chain names. If you split multiple PDB files in a loop it will be continuously added to the same folder.
+Function PDB_process takes a PDB file name which can be expressed as '6KZ5.pdb' or 'path/to/the/file/6KZ5.pdb'. One of the functions dependencies is package Bio3D [8,9] that helps with PDB file preparation. In addition, another parameter that you can supply is  ‘path’. Path can point to a directory where to split PDB into separate chain files (necessary for the downstream analyses) or you can leave a default option to create a folder in your working directory. Function PDB_process returns a list of split chain names. If you split multiple PDB files in a loop it will be continuously added to the same folder.
 Please note, for the downstream processing PDB files need to be split so that separate chains can be analysed independently.
 
 
@@ -47,9 +48,9 @@ pdb_df
 ## 2.2. Preparing PDB files
 
 Function PDB_prepare prepares a PDB file after it was pre-processed to generate Fi-score and normalised B-factor values as well as secondary structure designations. The function takes a PDB file name that was split into chains, e.g. '6KZ5_A.pdb'.
-The file is cleaned and only the complete entries for amino acids are kept for the analysis, e.g., amino acids from the terminal residues that do not contain both dihedral angles are removed. The function returns a data frame with protein secondary structure designation ‘Type’, Fi- score values ‘Fi_score', as well as  normalised B-factor values 'B_normalised'.
-It is important to comment on the use of dihedral angles, B-factor, and the derivation of Fi-score.
-To capture protein structural and topological features that could help with the identification or characterisation of a binding pocket or any other relevant site, it was important to extract and combine data from structural files to allow such information integration [2,10,11]⁠. Protein dihedral angles were used as they contain information on the local and global protein conformation where protein backbone conformation can be highly accurately recreated based on the dihedral angles[1,12–14]⁠. Moreover, since Ramachandran plot, which plots φ (phi) and ψ (psi) angle distributions for individual residues, allows only a holistic description of conformation and cannot be integrated with traditional parametric or non-parametric density estimation methods, specific transformation was required to use this data. An additional parameter, namely the oscillation amplitudes of the atoms around their equilibrium positions (B-factors) in the crystal structures, was used.  B-factors contain a lot of information on the overall structure, for example, these parameters depend on conformational disorder,  thermal motion paths, associations with the rotameric state of amino acids side-chains, and they also show dependence on the three-dimensional structure as well as protein flexibility [1,13,15–19]⁠. Normalised dihedral angles (standard deviation scaling to account for variability) and scaled B-factors (min-max scaling)  (Eq.1) were integrated into the Fi-score (Eq.2). It is important to highlight that B-factors need to be scaled so that different structural files can be compared [1]⁠.
+The file is cleaned and only the complete entries for amino acids are kept for the analysis, e.g. amino acids from the terminal residues that do not contain both dihedral angles are removed. The function returns a data frame with protein secondary structure designation ‘Type’, Fi- score values ‘Fi_score', as well as  normalised B-factor values 'B_normalised'.
+
+It is important to comment on the use of dihedral angles, B-factor, and the derivation of Fi-score. To capture protein structural and topological features that could help with the identification or characterisation of a binding pocket or any other relevant site, it is important to extract and combine data from structural files to allow such information integration [2,10,11]⁠. Protein dihedral angles were used as they contain information on the local and global protein conformation where protein backbone conformation can be highly accurately recreated based on the dihedral angles [1,12–14]⁠. Moreover, since Ramachandran plot, which plots φ (phi) and ψ (psi) angle distributions for individual residues, allows only a holistic description of conformation and cannot be integrated with traditional parametric or non-parametric density estimation methods, specific transformation was required to use this data. An additional parameter, namely the oscillation amplitudes of the atoms around their equilibrium positions (B-factors) in the crystal structures, was used.  B-factors contain a lot of information on the overall structure, for example, these parameters depend on conformational disorder,  thermal motion paths, associations with the rotameric state of amino acids side-chains, and they also show dependence on the three-dimensional structure as well as protein flexibility [1,13,15–19]⁠. Normalised dihedral angles (standard deviation scaling to account for variability) and scaled B-factors (min-max scaling) (Eq.1) were integrated into the Fi-score (Eq.2). It is important to highlight that B-factors need to be scaled so that different structural files can be compared [1]⁠.
 
 
 ![**Equation 1**. Min-max normalisation and scaling of B-factor where Bi-norm is scaled B-factor, Bi - B-factor for Cα, Bmax - largest B-factor value for the total protein B-factors for all Cα, Bmin - smallest B-factor value for the total protein B-factors for all Cα. B-factor normalisation is based on the full length protein.](Eq1.jpg){width=40%}
@@ -59,7 +60,7 @@ To capture protein structural and topological features that could help with the 
 
 
 
-To illustrate the function’s output, a Nur77 protein (6KZ5 chain A ) was selected as a case study. Nur77 protein, 6KZ5 chain A, analysis output with the extracted data, including normalised B-factor score ‘B-normalised’, ‘Fi_score’ and secondary structure assignment ‘Type’.
+To illustrate the function’s output, a Nur77 protein (6KZ5 chain A ) was selected as a case study. FUnction PDB_prepare prepares Nur77 protein, 6KZ5 chain A, and the output includes the extracted data, including normalised B-factor score ‘B-normalised’, ‘Fi_score’ and secondary structure assignment ‘Type’.
 
 ```{r}
 pdb_path<-system.file("extdata", "6kz5_A.pdb", package="Fiscore")
@@ -67,14 +68,14 @@ pdb_df<-PDB_prepare(pdb_path)
 head(pdb_df)
 
 ```
-Please note, that Bio3D package (dependency for this function) might issue a warning if your chain contains breakages. You can proceed with downstream analyses as this will be accounted for.
+Please note that Bio3D package (dependency for this function) might issue a warning if your chain contains breakages. You can proceed with downstream analyses as this will be accounted for.
 
 ## 2.3 Exploratory analysis and applications
 
 ## 2.3.1. Dihedral angle distribution plot (Ramachandran plot with densities)
 
 
-Function phi_psi_plot requires a PDB data frame generated by PDB_prepare. This function provides a binned density plot of dihedral angle distribution. Please note, you may get a geom_hex warning for removed lines if some of the bins clash with the boundaries. This is a geom_hex conflict and does not affect visualisation.
+Function phi_psi_plot requires a PDB data frame generated by PDB_prepare. This function provides a binned density plot for dihedral angle distributions. Please note, you may get a geom_hex warning for removed lines if some of the bins clash with the boundaries. This is a geom_hex conflict and does not affect visualisation.
 
 
 Nur77 protein, 6KZ5 chain A, a phi/psi value density plot.
@@ -88,7 +89,7 @@ phi_psi_plot(pdb_df)
 ## 2.3.2. Dihedral angle distribution plot
 
 Function phi_psi_bar_plot plots dihedral angle distribution per amino acid using a bar plot. The supplied data frame must be generated by PDB_prepare.  Some PDB files have breakages in their amino acid sequences; that is, some residues might be missing and it will be reflected in the plot via empty spaces.
-The plot allows to interactively take snapshots, zoom in to a specific region and check each bar’s data, i.e., residue number and the angle value.
+The plot allows the user to interactively take snapshots, zoom in to a specific region and check each bar’s data, i.e., residue number and the angle value.
 
 Nur77 protein, 6KZ5 chain A, a phi/psi value bar plot.
 ```{r}
@@ -100,7 +101,7 @@ phi_psi_bar_plot(pdb_df)
 
 ## 2.3.3. Dihedral angle distribution and secondary structure interactive plot
 
-Function phi_psi_interactive plots a scatter plot with a secondary structure element visualisation based on the PDB file data; please note, NA refers to unidentified region, e.g., a likely disordered region. The function requires a PDB data frame generated by PDB_prepare. You can interactively explore this plot by hovering your pointer on each data point.
+Function phi_psi_interactive plots a scatter plot with a secondary structure element visualisation based on the PDB file data; please note, NA refers to an unidentified region, e.g. a likely disordered region. The function requires a PDB data frame generated by PDB_prepare. You can interactively explore this plot by hovering your pointer on each data point.
 
 Nur77 protein, 6KZ5 chain A, a phi/psi interactive scatter plot.
 
@@ -144,7 +145,7 @@ Fi_score_plot(pdb_df)
 
 ## 2.3.7.  Calculate Fi-score for an individual region
 
-Function Fi_score_region calculates a combined Fi-score for a selected region; please note, some PDB files have breakages in their amino acid sequences and those values cannot be assessed. Moreover, values can be calculated either inclusively or not; ‘include’ is set to FALSE by default. Inclusive or not refers to weather the Fi-score is calculated based on the peptide bonds (not inclusive) or consider amino acids (inclusive) (Eq. 2). This analysis can be helpful if you need to classify specific regions and compare across multiple targets or extract specific region data and store in relational databases.
+Function Fi_score_region calculates a combined Fi-score for a selected region; please note, some PDB files have breakages in their amino acid sequences and those values cannot be assessed. Moreover, values can be calculated either inclusively or not; ‘include’ is set to FALSE by default. Inclusive or not refers to whether the Fi-score is calculated based on the peptide bonds (not inclusive) or consider amino acids (inclusive) (Eq. 2). This analysis can be helpful if you need to classify specific regions and compare across multiple targets or extract specific region data and store the scores in relational databases.
 
 
 ```{r}
@@ -154,7 +155,7 @@ Fi_score_region(pdb_df,50,70)
 
 ## 2.3.8. Fi-score plot visualising secondary structure elements
 
-Fiscore_secondary plots a bar plot with a secondary structure element visualisation based on the PDB file data; note,  NA refers to an unidentified region, e.g., a likely disordered or unstructured region.
+Fiscore_secondary plots a bar plot with a secondary structure element visualisation based on the PDB file data; note,  NA refers to an unidentified region, e.g. a likely disordered or unstructured region.
 
 Nur77 protein, 6KZ5 chain A, a Fi-score secondary structure element visualisation.
 ```{r}
@@ -163,8 +164,8 @@ Fiscore_secondary(pdb_df)
 
 ## 2.3.9. Hydrophobicity plot
 
-Function hydrophobicity_plot provides a plot of amino acid sequence hydrophobicity profile using Kyte-Doolittle hydrophobicity scale[20,21]⁠. The Kyte-Doolittle scale is used for detecting hydrophobic regions in proteins. Regions with a positive value are hydrophobic and those with negative values are hydrophilic. This scale can be used to identify both surface-exposed regions as well as transmembrane regions, depending on the window size used.
-Function requires a PDB data frame generated by PDB_prepare. ‘Window’ parameter is needed to determine the size of a window for hydrophobicity calculations. The selection must be odd numbers between 3 and 21, default is 21.’ Weight’ parameter is needed to establish relative weight of the window edges compared to the window center (in %); default=100. ‘Model’ determines weather weights are calculated linearly (y=k * x+b) or exponentially (y=a * b^x); default="linear". Please, note the terminal amino acids that cannot be included into the window are added without weighing, that is their assigned hydrophobicity values by Kyte-Doolittle scale are used instead. The plot values are all scaled so that different proteins can be compared.
+Function hydrophobicity_plot provides a plot of amino acid sequence hydrophobicity profile using Kyte-Doolittle hydrophobicity scale [20,21]⁠. The Kyte-Doolittle scale is used for detecting hydrophobic regions in proteins. Regions with a positive value are hydrophobic and those with negative values are hydrophilic. This scale can be used to identify both surface-exposed regions as well as transmembrane regions, depending on the window size used.
+Function requires a PDB data frame generated by PDB_prepare. ‘Window’ parameter is needed to determine the size of a window for hydrophobicity calculations. The selection must be odd numbers between 3 and 21, default is 21.’ Weight’ parameter is needed to establish relative weight of the window edges compared to the window center (in %); default=100. ‘Model’ determines weather weights are calculated linearly (y=k * x+b) or exponentially (y=a * b^x); default='linear'. Please, note the terminal amino acids that cannot be included into the window are added without weighing; that is, their assigned hydrophobicity values by Kyte-Doolittle scale are used instead. The plot values are all scaled so that different proteins can be compared.
 
 Nur77 protein, 6KZ5 chain A, a scaled hydrophobicity plots with different parameters.
 ```{r}
@@ -178,15 +179,16 @@ hydrophobicity_plot(pdb_df,window = 9,weight = 25,model = "exponential")
 
 ## 2.3.10. Gaussian Mixture Models for structural feature prediction and classification
 
-Function cluster_ID can be used to group structural features using the Fi-score via Gaussian Mixture Models  (GMM). This function also automatically selects an optimal number of clusters and a model to be fitted during the (expectation maximisation) EM phase of clustering for GMM. The function provides summaries and also helps to visualise clusters based on the Fi-score using scatter plots and dimension reduction plots.  Please do not forget to set seed for reproducibility before using this function. Required parameters include a data frame containing a processed PDB file with Fi-score values,  a number of clusters to consider during model selection; default setting is 20 clusters (“max_range”), a ‘type’ parameter needed that defines whether to include the information on secondary structure elements from the PDB file when plotting; default value is TRUE (“secondary_structures”). User also has an option to select a cluster number to test “clusters” together with “modelNames”. Please note, both of the optional entries need to be selected and defined, if the user wants to test other clustering options that were not provided by the automated BIC output. This is an advanced option and the user should assess the BIC output to decide which model and what cluster number he or she wants to try out.
-The function will plot best Bayesian information criterion values together with the selected model, e.g. 6 clusters and VVI and the BIC plot. You can read more about these functions in mclust package documentation[22]⁠.
+Function cluster_ID can be used to group structural features using the Fi-score via Gaussian Mixture Models  (GMM). This function also automatically selects an optimal number of clusters and a model to be fitted during the (expectation maximisation) EM phase of clustering for GMM. The function provides summaries and also helps to visualise clusters based on the Fi-score using scatter plots and dimension reduction plots.  Please do not forget to set seed for reproducibility before using this function. Required parameters include a data frame containing a processed PDB file with Fi-score values,  a number of clusters to consider during model selection; the default setting is 20 clusters ('max_range'), a ‘secondary_structures’ parameter which is needed for the inclusion of the secondary structure element information from the PDB file when plotting; the default value is TRUE. Users also have an option to select a cluster number to test 'clusters' together with 'modelNames'. Please note, both of the optional entries need to be selected and defined, if the user wants to test other clustering options that were not provided by the automated BIC output. This is an advanced option and the user should assess the BIC output to decide which model and what cluster number he or she wants to try out.
+The function will plot best Bayesian information criterion values together with the selected model, e.g. 6 clusters and VVI and the BIC plot. You can read more about these functions in mclust package documentation [22]⁠.
 
 
-A dimension reduction method for visualizing the clustering or classification structure that was obtained from Gaussian densities is also reported. The method relies on reducing the dimensionality by identifying a set of linear combinations which are ordered by importance as quantified by the associated eigenvalues of the original features so that to capture most of the clustering or classification structure contained in the data[22]⁠.
+A dimension reduction analysis for visualizing the clustering or classification structure that was obtained from Gaussian densities is also reported. The method relies on reducing the dimensionality by identifying a set of linear combinations which are ordered by importance as quantified by the associated eigenvalues of the original features [22]⁠. This function helps to explore how well clustering captures the characteristics of the data.
 
 
 ```{r}
 df<-cluster_ID(pdb_df)
+
 
 ```
 
@@ -195,16 +197,16 @@ df<-cluster_ID(pdb_df,clusters = 5, modelNames = "VVI")
 
 ```
 
-The user also has an option to select detailed cluster mapping (secondary_structures=TRUE; Fig.2 ) where both cluster and secondary structure elements will be visualised or you can  opt out of cluster visualisation (secondary_structures=FALSE; Fig. 3). Cluster visualisation should help identify structural and functional regions. This analysis can also be done on a specified region in a protein, e.g. a specific domain. For regional analysis the data frame supplied for the function only needs to contain the data for the region of interest that was pre-filtered.
+For GMM clustering, the user also has an option to select detailed cluster mapping (secondary_structures=TRUE; Fig.2 ) where both cluster and secondary structure elements will be visualised or one can  opt out of cluster visualisation (secondary_structures=FALSE; Fig. 3). Cluster visualisation should help identify structural and functional regions. This analysis can also be done on a specified region in a protein, e.g. a specific domain. For regional analysis the data frame supplied for the function only needs to contain the data for the region of interest that was pre-filtered.
 
-![**Figure 2**. Nur77 protein, 6KZ5 chain A, GMM Fi-score cluster visualisation with secondary structure visualisation (interactive).](Figure2.jpg)
+![**Figure 2**. Nur77 protein, 6KZ5 chain A, GMM Fi-score cluster visualisation with secondary structure visualisation (interactive).](Figure2.jpg){width=70%}
 
 
-![**Figure 3**. Nur77 protein, 6KZ5 chain A, GMM Fi-score cluster visualisation without secondary structure visualisation (interactive).](Figure3.jpg)
+![**Figure 3**. Nur77 protein, 6KZ5 chain A, GMM Fi-score cluster visualisation without secondary structure visualisation (interactive).](Figure3.jpg){width=70%}
 
 ## 2.3.11. Density plots
   
-Function density_plots provides a density plot set for phi/psi angle distributions, Fi-score, and normalised B-factor.  3D visualisation of angle distribution for every residue is also included. The plots can be used for a quick assessment of the overall parameters or to summarise observations. Function requires a PDB data frame generated by PDB_prepare. You have an option to provide ‘model_report’ from cluster_ID function to incorporate analysis on how clusters differentiate between secondary structure elements or how similar these elements are.
+Function density_plots provides a density plot set for phi/psi angle distributions, Fi-score, and normalised B-factor.  3D visualisation of angle distribution for every residue is also included. The plots can be used for a quick assessment of the overall parameters or to summarise the observations. Function requires a PDB data frame generated by PDB_prepare. You have an option to provide ‘model_report’ from cluster_ID function to incorporate analysis on how well clusters differentiate between secondary structure elements or how similar these elements are.
 
 Nur77 protein, 6KZ5 chain A, summary plots.
 
@@ -220,7 +222,7 @@ density_plots(pdb_df, df)
 ## 3. Discussion
 
 The described methodology and the introduced package can be integrated  with other tools and machine learning models. This analysis could aid in the identification of new target families. The described fingerprinting is a novel way to capture protein data since it does not rely on  the  sequence  information but actually measures physicochemical properties of sites of interest.  *Fiscore* package provides both analytical and visualisation tools to interactively assess protein structural files and  capture relevant amino acid interactions over a selected span of a protein sequence. This strategy can become especially relevant in the pharmaceutical industry and drug discovery as more complex targets and protein-protein interactions need to be assessed [1-5].
-*Fiscore* package contains a number of useful functions that, for example, can be used to plot interactive Ramachandran plots or 3D visualisations with normalised B-factor values. *Fiscore* package also introduces an easy implementation of machine learning that does not require prior knowledge. Moreover, the described hydrophobicity evaluation and plotting functionality offers a new tool for protein structure evaluation connecting the hydrophobic features with the secondary structure elements. This could be useful in deciding what region might be a good binding pocket for a drug. 
+*Fiscore* package contains a number of useful functions that, for example, can be used to plot interactive Ramachandran plots or 3D visualisations with normalised B-factor values. *Fiscore* package also introduces an easy implementation of machine learning that does not require prior knowledge. Moreover, the described hydrophobicity evaluation and plotting functionality offers a new tool for protein structure assessment connecting the hydrophobic features with the secondary structure elements. This could be useful in deciding what region might be a good binding pocket for a drug. 
 Finally, Fi-scores from multiple targets or selected protein domains can be aggregated and used in relational databases to associate a specific physicochemical protein feature with additional experimental readouts or bioassay data.
 
 ## 4. Package comments
@@ -229,13 +231,15 @@ The package has the following dependencies: Bio3D, plotly, ggplot2, mclust, stri
 
 Please note that plotly is used to build interactive plots which will appear on the Viewer tab in RStudio.
 
-Version: v0.1.2
+Version: v0.1.3
 
-Github page: https://github.com/Algorithm379/Packages/
-Inquiries: info@algorithm379.com
+Github page: https://github.com/AusteKan/Fiscore
 
 
-## 5.References
+Inquiries: auste.kan [at] algorithm379 [.] com
+
+
+## 5. References
  
 1. Kanapeckaitė A, Beaurivage C, Hancock M & Verschueren E (2020) Fi-score: a novel approach to characterise protein topology and aid in drug discovery studies. J Biomol Struct Dyn, 1–11. 
 

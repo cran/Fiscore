@@ -43,6 +43,10 @@ PDB_prepare<-function(file_name){
   #clean file to remove terminal residues and ligand data
   pdb_file_temp<-bio3d::clean.pdb(pdb_file_temp, consecutive = TRUE, force.renumber = FALSE, fix.chain = FALSE, fix.aa = TRUE, rm.wat = TRUE, rm.lig = TRUE, rm.h = FALSE, verbose = FALSE)
 
+  #warnings
+  if((length(bio3d::pdbseq(pdb_file_temp)))==0){stop("The file has no amino acid residues")}
+  if((length(bio3d::pdbseq(pdb_file_temp)))<=5){stop("This is a peptide and not protein")}
+
   #extract specific features------------
 
   #prepare helix dataframe
@@ -121,10 +125,10 @@ PDB_prepare<-function(file_name){
   #B-factor extraction ----
   #Preparing full data frame that includes dihedral angles coordinates and residue info
   #Extracting B factor information for C alpha atom to match dihedral angles
-  pdb_b<-pdb_file_temp$atom[which((pdb_file_temp$atom$elety=="CA")&(pdb_file_temp$atom$resno%in%c(min(as.vector(pdb_df$df_resno)):max(as.vector(pdb_df$df_resno))))),c("resno","resid","b")]
+  pdb_b<-pdb_file_temp$atom[which((pdb_file_temp$atom$elety=="CA")&(pdb_file_temp$atom$resno%in%pdb_df$"df_resno")),c("resno","resid","b")]
   #Adding B factor information
   pdb_df$B_factor<-pdb_b$b
-
+  if(all(pdb_df$B_factor==0)){warning("All B-factors are 0 and the analysis will be limited")}
   #***B-factor normalization and adding norm column ----
 
   pdb_df$B_normalised<-MINMAX_normalisation_func(pdb_df$B_factor)

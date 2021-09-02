@@ -1,5 +1,6 @@
 ## ----setup, include=FALSE-----------------------------------------------------
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE,fig.width=8, fig.height=6)
+
 
 ## ----message=FALSE, warning=FALSE---------------------------------------------
 library(Fiscore)
@@ -60,6 +61,7 @@ hydrophobicity_plot(pdb_df,window = 9,weight = 25,model = "exponential")
 
 ## -----------------------------------------------------------------------------
 df<-cluster_ID(pdb_df)
+
 
 
 ## -----------------------------------------------------------------------------

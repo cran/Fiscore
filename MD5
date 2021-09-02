@@ -1,10 +1,10 @@
-e7767f4bbcc217db0a7ef3262a3f6059 *DESCRIPTION
+619ecfc06a96460ec630086142ee6b11 *DESCRIPTION
 2115206c0e2d5d55fce5d4086de57d1d *NAMESPACE
 fad08388d7a15d51422354903d95a8cd *R/B_plot_normalised.R
 9e65609753bbe88d903c650a0eeeee6a *R/Fi_score_plot.R
 18268d25ddf746dbc5f34cd432dc0653 *R/Fi_score_region.R
 50a2bece5b20992502e85ccdd9d3ea2c *R/Fiscore_secondary.R
-553fd3acb95e8d5c4f404176fa245b3e *R/PDB_prepare.R
+da72cd2db3d608565af1a70bfa457c08 *R/PDB_prepare.R
 dcc3876fec9a4e26123860ababddf960 *R/PDB_process.R
 4e62088cbba99f982d6f6b466410aa3b *R/cluster_ID.R
 d559a2131163f781bbbb6a23d1cc4a76 *R/density_plots.R
@@ -14,9 +14,9 @@ cd56d3c964c4192ccca1acfffa74154c *R/hydrophobicity_plot.R
 83aba6b2a0996d628dcbcb48df06eaa5 *R/phi_psi_interactive.R
 157a4a93e112e17efbe8c6fbf02f4101 *R/phi_psi_plot.R
 30b0742af0365fdcca61fc6c799d2ae3 *build/vignette.rds
-234eda52f5b6bcda31e8a629e41f9a13 *inst/doc/Fiscore_vignette.R
-ac1e09c0ea3aaee2c224959c4545c092 *inst/doc/Fiscore_vignette.Rmd
-5264481030fde02bb1ff2df73b9b4c55 *inst/doc/Fiscore_vignette.html
+90aff6acef7c098b845c50c17d9fe3ce *inst/doc/Fiscore_vignette.R
+71716e4fb077218eb91649a9149b9dc5 *inst/doc/Fiscore_vignette.Rmd
+93075a10ae753bb31f18fcd82d59b1ff *inst/doc/Fiscore_vignette.html
 35c3a2f9b2e7ffc66c03a2e431c20fb5 *inst/extdata/3nf5.pdb
 ffc7bcaf81045e298a70b38493887536 *inst/extdata/3nf5_A.pdb
 f8e2cb2358ca994db85edb9442e0af5a *inst/extdata/6kz5.pdb
@@ -40,4 +40,4 @@ b37a9eb1ee71fa07f3c5f711015bef91 *vignettes/Eq2.jpg
 12c8834eb5c186ac53e3a6e3a5da6540 *vignettes/Figure1.jpg
 dd2de8e8ce98211ac882cc701a424136 *vignettes/Figure2.jpg
 8d0852f5bb0c9f638d00c2a94579f403 *vignettes/Figure3.jpg
-ac1e09c0ea3aaee2c224959c4545c092 *vignettes/Fiscore_vignette.Rmd
+71716e4fb077218eb91649a9149b9dc5 *vignettes/Fiscore_vignette.Rmd
